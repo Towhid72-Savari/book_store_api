@@ -1,5 +1,11 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from core import models
+
+
+def sample_user(email='test@test.com', password='testpass'):
+    """Create a sample user"""
+    return get_user_model().objects.create_user(email, password)
 
 
 class ModelTests(TestCase):
@@ -37,3 +43,13 @@ class ModelTests(TestCase):
         )
         self.assertTrue(superuser.is_staff)
         self.assertTrue(superuser.is_superuser)
+
+    def test_book_str(self):
+        """Test book representation"""
+        book = models.Book.objects.create(
+            title='Animals Farm',
+            author='George Owl',
+            publish_year=1990
+        )
+
+        self.assertEqual(str(book), f'{book.title} by {book.author}')

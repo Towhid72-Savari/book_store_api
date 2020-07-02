@@ -33,3 +33,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Book(models.Model):
+    """DB table for books"""
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    publish_year = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.title} by {self.author}'
