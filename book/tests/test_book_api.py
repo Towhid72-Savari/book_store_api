@@ -27,4 +27,22 @@ class PublicBooksApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
+    def test_create_book_successful(self):
+        """Test that creating a new bok is successful"""
+        payload = {'title': 'Test', 'author': 'Test', 'publish_year': 1190}
+        self.client.post(BOOK_URL, payload)
+
+        exists = Book.objects.filter(
+            title=payload['title'], author=payload['author']
+        ).exists()
+        self.assertTrue(exists)
+
+    def test_create_book_invalid(self):
+        """Test creating a new book with invalid payload"""
+        payload = {'title': 'Test', 'author': '', 'publish_year': 1190}
+        res = self.client.post(BOOK_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
 
